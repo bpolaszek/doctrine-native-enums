@@ -1,0 +1,92 @@
+<?php
+
+declare(strict_types=1);
+
+namespace BenTools\Doctrine\NativeEnums\Type;
+
+use BackedEnum;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Types\Type;
+use InvalidArgumentException;
+
+use function is_a;
+use function is_int;
+use function sprintf;
+
+final class NativeEnum extends Type
+{
+    private string $name;
+    private string $class;
+    private BackedEnumType $type;
+
+    public static function registerEnumType(string $enumType, ?string $enumClass = null): void
+    {
+        $enumClass ??= $enumType;
+        if (!is_a($enumClass, BackedEnum::class, true)) {
+            throw new InvalidArgumentException(sprintf('Class `%s` is not a valid enum.', $enumClass));
+        }
+
+        self::addType($enumType, self::class);
+        $type = self::getType($enumType);
+        $type->name = $enumType;
+        $type->class = $enumClass;
+        $type->type = self::detectEnumType($enumClass);
+    }
+
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
+    {
+        return $this->type === BackedEnumType::INT
+            ? $platform->getIntegerTypeDeclarationSQL($column)
+            : $platform->getVarcharTypeDeclarationSQL($column);
+    }
+
+    public function getName(): string
+    {
+        return $this->name ?? throw new \LogicException(
+            sprintf(
+                'Class `%s` cannot be used as primary type; register your own types with %s::registerEnumType() instead.',
+                __CLASS__,
+                __CLASS__,
+            )
+        );
+    }
+
+    /**
+     * @param BackedEnum|null $enum
+     */
+    public function convertToDatabaseValue($enum, AbstractPlatform $platform)
+    {
+        if (null === $enum) {
+            return null;
+        }
+
+        if (!$enum instanceof BackedEnum) {
+            throw new InvalidArgumentException(
+                sprintf('Expected instance of BackedEnum, got `%s`.', \get_debug_type($enum))
+            );
+        }
+
+        return $enum->value;
+    }
+
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?BackedEnum
+    {
+        if (null === $value) {
+            return null;
+        }
+
+        $value = $this->type->cast($value);
+
+        /** @var BackedEnum $class */
+        $class = $this->class;
+
+        return $class::from($value);
+    }
+
+    public static function detectEnumType(string $enumClass): BackedEnumType
+    {
+        $firstCase = $enumClass::cases()[0]?->value ?? '';
+
+        return is_int($firstCase) ? BackedEnumType::INT : BackedEnumType::STRING;
+    }
+}

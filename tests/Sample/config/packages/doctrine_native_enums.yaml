@@ -1,0 +1,4 @@
+doctrine_native_enums:
+  enum_types:
+    BenTools\Doctrine\NativeEnums\Tests\StringEnumStub: foos
+    BenTools\Doctrine\NativeEnums\Tests\IntegerEnumStub: ~
