@@ -9,6 +9,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use InvalidArgumentException;
 
+use ReflectionEnum;
 use function is_a;
 use function is_int;
 use function sprintf;
@@ -85,8 +86,8 @@ final class NativeEnum extends Type
 
     public static function detectEnumType(string $enumClass): BackedEnumType
     {
-        $firstCase = $enumClass::cases()[0]?->value ?? '';
+        $type = (new ReflectionEnum($enumClass))->getBackingType()?->getName();
 
-        return is_int($firstCase) ? BackedEnumType::INT : BackedEnumType::STRING;
+        return 'int' === $type ? BackedEnumType::INT : BackedEnumType::STRING;
     }
 }

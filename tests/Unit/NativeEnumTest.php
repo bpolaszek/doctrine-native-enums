@@ -10,6 +10,7 @@ use BenTools\Doctrine\NativeEnums\Tests\IntegerEnumStub;
 use BenTools\Doctrine\NativeEnums\Tests\StringEnumStub;
 use BenTools\Doctrine\NativeEnums\Tests\StandardEnumStub;
 use BenTools\Doctrine\NativeEnums\Type\NativeEnum;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use InvalidArgumentException;
 use LogicException;
@@ -58,6 +59,19 @@ test('PHP -> DB => converts a backed enum to a scalar value', function (string $
     [StringEnumStub::class, null, null],
     [IntegerEnumStub::class, null, null],
 ]);
+
+test('PHP -> DB conversion yells when trying to convert a non-backed-enum', function ($value) {
+    clear_type_registry();
+    NativeEnum::registerEnumType(StringEnumStub::class);
+    Type::getType(StringEnumStub::class)->convertToDatabaseValue($value, new DoctrinePlatformStub());
+})
+    ->with([
+        StandardEnumStub::class,
+        stdClass::class,
+        'foo',
+    ])
+    ->throws(InvalidArgumentException::class);
+
 test('DB -> PHP => converts a scalar value to an enum', function (string $type, string|int|null $input, ?BackedEnum $expected) {
     clear_type_registry();
     NativeEnum::registerEnumType($type);
@@ -67,4 +81,15 @@ test('DB -> PHP => converts a scalar value to an enum', function (string $type, 
     [IntegerEnumStub::class, 1, IntegerEnumStub::ONE],
     [StringEnumStub::class, null, null],
     [IntegerEnumStub::class, null, null],
+]);
+
+it('generates the appropriate SQL definition', function (string $enumClass, string $expectedMethod) {
+    clear_type_registry();
+    $platform = \Mockery::mock(AbstractPlatform::class);
+    NativeEnum::registerEnumType($enumClass);
+    $platform->shouldReceive($expectedMethod)->andReturn('');
+    Type::getType($enumClass)->getSQLDeclaration([], $platform);
+})->with([
+    [StringEnumStub::class, 'getVarcharTypeDeclarationSQL'],
+    [IntegerEnumStub::class, 'getIntegerTypeDeclarationSQL'],
 ]);

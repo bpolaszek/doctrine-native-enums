@@ -8,6 +8,9 @@ use BenTools\Doctrine\NativeEnums\Type\NativeEnum;
 use Doctrine\DBAL\Types\Type;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class DoctrineNativeEnumsBundle extends Bundle
 {
     public function boot(): void

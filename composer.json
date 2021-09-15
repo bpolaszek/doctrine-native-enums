@@ -32,6 +32,7 @@
         "doctrine/orm": "^2.9",
         "symfony/validator": "^5.3",
         "ext-sqlite3": "*",
-        "squizlabs/php_codesniffer": "^3.6"
+        "squizlabs/php_codesniffer": "^3.6",
+        "mockery/mockery": "^1.4"
     }
 }
