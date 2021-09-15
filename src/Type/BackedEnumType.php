@@ -7,10 +7,10 @@ namespace BenTools\Doctrine\NativeEnums\Type;
 /**
  * @internal
  */
-enum BackedEnumType: string
+enum BackedEnumType
 {
-    case STRING = 'string';
-    case INT = 'int';
+    case STRING;
+    case INT;
 
     public function cast(mixed $value): int|string
     {

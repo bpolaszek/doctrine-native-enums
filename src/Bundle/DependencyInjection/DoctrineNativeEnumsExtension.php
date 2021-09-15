@@ -7,6 +7,9 @@ namespace BenTools\Doctrine\NativeEnums\Bundle\DependencyInjection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class DoctrineNativeEnumsExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void

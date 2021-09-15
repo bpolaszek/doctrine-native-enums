@@ -1,3 +1,6 @@
+[![CI Workflow](https://github.com/bpolaszek/doctrine-native-enums/actions/workflows/ci.yml/badge.svg)](https://github.com/bpolaszek/doctrine-native-enums/actions/workflows/ci.yml)
+[![Coverage](https://codecov.io/gh/bpolaszek/doctrine-native-enums/branch/master/graph/badge.svg?token=2w436y0n4Z)](https://codecov.io/gh/bpolaszek/doctrine-native-enums)
+
 # Doctrine Native Enums
 
 This library provides first-class support to [PHP Enums](https://wiki.php.net/rfc/enumerations), introduced in PHP 8.1,
