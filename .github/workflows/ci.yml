@@ -8,6 +8,9 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        composer_flags: ['', '--prefer-lowest']
     steps:
       - uses: actions/checkout@v2
 
@@ -18,7 +21,9 @@ jobs:
           coverage: pcov
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --ignore-platform-req=php
+        run: |
+          composer install --prefer-dist --no-progress --ignore-platform-req=php
+          composer update doctrine/dbal ${{ matrix.composer_flags }}
 
       - name: Run tests
         run: vendor/bin/pest --coverage --coverage-clover=coverage.xml
