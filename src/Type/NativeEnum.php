@@ -90,4 +90,12 @@ final class NativeEnum extends Type
 
         return 'int' === $type ? BackedEnumType::INT : BackedEnumType::STRING;
     }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    {
+        return true;
+    }
 }
