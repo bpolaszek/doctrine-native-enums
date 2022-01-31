@@ -3,8 +3,12 @@
 
 # Doctrine Native Enums
 
-This library provides first-class support to [PHP Enums](https://wiki.php.net/rfc/enumerations), introduced in PHP 8.1,
+This library provides support to [PHP Enums](https://wiki.php.net/rfc/enumerations), introduced in PHP 8.1,
 within your Doctrine entities.
+
+⚠️ **Jan 2022: Doctrine ORM 2.11 finally introduced [native support](https://www.doctrine-project.org/2022/01/11/orm-2.11.html) for PHP 8.1 enums! 🎉** 
+
+**This means that this bundle will soon or later be discontinued. Please upgrade your dependencies!**
 
 ## Installation
 
