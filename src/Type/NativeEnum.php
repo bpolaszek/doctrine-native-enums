@@ -8,10 +8,9 @@ use BackedEnum;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use InvalidArgumentException;
-
 use ReflectionEnum;
+
 use function is_a;
-use function is_int;
 use function sprintf;
 
 final class NativeEnum extends Type
@@ -55,7 +54,7 @@ final class NativeEnum extends Type
     /**
      * @param BackedEnum|null $enum
      */
-    public function convertToDatabaseValue($enum, AbstractPlatform $platform)
+    public function convertToDatabaseValue(mixed $enum, AbstractPlatform $platform): int|string|null
     {
         if (null === $enum) {
             return null;
@@ -70,7 +69,7 @@ final class NativeEnum extends Type
         return $enum->value;
     }
 
-    public function convertToPHPValue($value, AbstractPlatform $platform): ?BackedEnum
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?BackedEnum
     {
         if (null === $value) {
             return null;
