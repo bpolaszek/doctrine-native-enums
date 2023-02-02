@@ -13,11 +13,11 @@ use ReflectionEnum;
 use function is_a;
 use function sprintf;
 
-final class NativeEnum extends Type
+class NativeEnum extends Type
 {
-    private string $name;
-    private string $class;
-    private BackedEnumType $type;
+    protected string $name;
+    protected string $class;
+    protected BackedEnumType $type;
 
     public static function registerEnumType(string $enumType, ?string $enumClass = null): void
     {
