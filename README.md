@@ -8,7 +8,11 @@ within your Doctrine entities.
 
 ⚠️ **Jan 2022: Doctrine ORM 2.11 finally introduced [native support](https://www.doctrine-project.org/2022/01/11/orm-2.11.html) for PHP 8.1 enums! 🎉** 
 
-**This means that this bundle will soon or later be discontinued. Please upgrade your dependencies!**
+**Still this package may be useful for defining custom enum types, in particular if one wants to use MySQL enums on the DB side (for whatever reason)**
+
+The `feature/allow-child-classes` branch removes the `final` keyword
+from the class and makes all member `protected` instead of `private`
+in order to make it possible to extend this class.
 
 ## Installation
 

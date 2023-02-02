@@ -13,11 +13,11 @@ use ReflectionEnum;
 use function is_a;
 use function sprintf;
 
-final class NativeEnum extends Type
+class NativeEnum extends Type
 {
-    private string $name;
-    private string $class;
-    private BackedEnumType $type;
+    protected string $name;
+    protected string $class;
+    protected BackedEnumType $type;
 
     public static function registerEnumType(string $enumType, ?string $enumClass = null): void
     {
@@ -26,11 +26,11 @@ final class NativeEnum extends Type
             throw new InvalidArgumentException(sprintf('Class `%s` is not a valid enum.', $enumClass));
         }
 
-        self::addType($enumType, self::class);
-        $type = self::getType($enumType);
+        parent::addType($enumType, static::class);
+        $type = parent::getType($enumType);
         $type->name = $enumType;
         $type->class = $enumClass;
-        $type->type = self::detectEnumType($enumClass);
+        $type->type = static::detectEnumType($enumClass);
     }
 
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
