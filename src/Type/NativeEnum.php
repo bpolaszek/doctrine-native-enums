@@ -26,11 +26,11 @@ class NativeEnum extends Type
             throw new InvalidArgumentException(sprintf('Class `%s` is not a valid enum.', $enumClass));
         }
 
-        self::addType($enumType, self::class);
-        $type = self::getType($enumType);
+        parent::addType($enumType, static::class);
+        $type = parent::getType($enumType);
         $type->name = $enumType;
         $type->class = $enumClass;
-        $type->type = self::detectEnumType($enumClass);
+        $type->type = static::detectEnumType($enumClass);
     }
 
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
